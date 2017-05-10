@@ -1,6 +1,6 @@
 # Colony Case Study: Isomorphic Apps Without Node
 
-> NB: This article was written in early 2016 and mostly describes work carried out between 2014 and 2015. As a high-level overview, it is still mostly accurate of our architecture and processes. However, significant work was carried out between late 2016 to mid 2017 to decouple and genericise much of what is described below in to Colony's own "Cortex" framework, with implemenations in both JavaScript and C#. While this article serves as a great introduction to our Isomorphic approach, all information pertaining to the current iteration of the Cortex framework should be sought within the relavent Cortex documentation.
+> NB: This article was written in early 2016 and mostly describes work carried out between 2014 and 2015. As a high-level overview, it is still mostly accurate of our architecture and processes. However, significant work was carried out between late 2016 to mid 2017 to decouple and genericise much of what is described below in to Colony's own "Cortex" framework, with implementations in both JavaScript and C#. While this article serves as a great introduction to our Isomorphic approach, all information pertaining to the current iteration of the Cortex framework should be sought within the relevant Cortex documentation.
 
 ## Background
 
@@ -61,7 +61,7 @@ The `entry` object holds data pertaining to the current resource being viewed (e
     ...
     <title>
         {{#if entry.title}}
-            {{entry.title}} | 
+            {{entry.title}} |
         {{/if}}
 
         {{global.title}}
@@ -75,10 +75,10 @@ The `user` object holds non-sensitive data pertaining to the signed in user, suc
 ``` handlebars
 <aside>
     <h3>Hello {{user.firstName}}!</h4>
-    
+
     {{#if user.hasPurchases}}
         <h4>Your Recent Purchases</h4>
-        
+
         {{#each user.recentPurchases}}
             ...
         {{/each}}
@@ -103,7 +103,7 @@ The `module` is used when data must be delivered to a specific module without ex
 ``` handlebars
 <figure>
     <img src="{{module.image.url}}" alt="{{module.image.altText}}"/>
-    
+
     {{#if module.description}}
         <figcaption>
             <p>{{module.description}}</p>
@@ -115,7 +115,7 @@ The `module` is used when data must be delivered to a specific module without ex
 
 ## Transpiled View Models
 
-With our top level data-structure defined, the internal structure of each of these objects would now need to be defined. With C# being the strictly-typed language that it is, arbitrarily passing dynamic object literals around in the typically loose JavaScript style would not cut it. Each view-model would need strictly-defined properties with their respective types. 
+With our top level data-structure defined, the internal structure of each of these objects would now need to be defined. With C# being the strictly-typed language that it is, arbitrarily passing dynamic object literals around in the typically loose JavaScript style would not cut it. Each view-model would need strictly-defined properties with their respective types.
 
 As we wanted to keep view-model design the responsibility of the front-end, we decided that these should be written in JavaScript. This would also allow front-end team members to easily test the rendering of templates (for example, using a simple Express development app) without needing to integrate them with the .NET back-end.
 
@@ -138,7 +138,7 @@ class Bundle extends Product {
     }
 }
 ```
-> A typical JavaScript view model in our application describing a `Bundle`, and inheriting from another model called `Product`. 
+> A typical JavaScript view model in our application describing a `Bundle`, and inheriting from another model called `Product`.
 
 Templates often require the checking of multiple pieces of data before showing or hiding a particular element. To keep templates clean however, `#if` statements in Handlebars may only evaluate a single property, and comparisons are not allowed without custom helper functions which in our case would have to be duplicated in both JavaScript and C#. While more complex logic can be achieved by nesting logical statements, this creates unreadable and unmaintainable templates, and is against the philosophy of logicless templating. We needed to decide where the additional logic needed in these situations would live.
 
@@ -292,9 +292,9 @@ As we needed to pay close attention to making sure that both implementations wou
 
 ## Front-end Single Page App
 
-Our development team culture had always been to build as much as we could in-house, and own our technology as a result. When it came to developing the first iteration of our single page app in 2014, we had the choice of using an off-the-shelf framework like Angular, Backbone or Ember, or building our own. With our templating taken care of, and our top-level data structure over the API forming our application state, we still needed a few more components to manage routing, data-binding and user interface components. We strongly believed, and still do, in the concept of “unobtrusive” JavaScript, so the blurring of HTML and JavaScript in Angular (and now React's JSX) was something we wanted to avoid. We also realised that trying to retrofit an opinionated framework on to our now quite unique architecture, would result in significant hacking and a fair amount of redundancy in the framework. We therefore decided to build our own solution, with a few distinct principles in mind. Firstly, UI behaviour should not be tightly coupled to specific markup. Secondly, the combination of changes to the application state and the handlebars logic already defined in our templates and layouts should be enough to enable dynamic re-rendering of any element on the page at any time. 
+Our development team culture had always been to build as much as we could in-house, and own our technology as a result. When it came to developing the first iteration of our single page app in 2014, we had the choice of using an off-the-shelf framework like Angular, Backbone or Ember, or building our own. With our templating taken care of, and our top-level data structure over the API forming our application state, we still needed a few more components to manage routing, data-binding and user interface components. We strongly believed, and still do, in the concept of “unobtrusive” JavaScript, so the blurring of HTML and JavaScript in Angular (and now React's JSX) was something we wanted to avoid. We also realised that trying to retrofit an opinionated framework on to our now quite unique architecture, would result in significant hacking and a fair amount of redundancy in the framework. We therefore decided to build our own solution, with a few distinct principles in mind. Firstly, UI behaviour should not be tightly coupled to specific markup. Secondly, the combination of changes to the application state and the handlebars logic already defined in our templates and layouts should be enough to enable dynamic re-rendering of any element on the page at any time.
 
-The solution we arrived at is not only extremely lightweight, but also extremely modular. At the lowest level we have our state and fully rendered views delivered from the server, where we can denote arbitrary pieces of markup to “subscribe” to the creation of a new immutable state. These changes are then diffed at a data-level and signalled using DOM events which (while slightly more "hands-on") we found to be much more performant and lighweight than an Angular-like digest loop, experimental “Observable” implementations, or virtual DOM diffing. When a change happens, that section of the DOM is re-rendered and replaced.
+The solution we arrived at is not only extremely lightweight, but also extremely modular. At the lowest level we have our state and fully rendered views delivered from the server, where we can denote arbitrary pieces of markup to “subscribe” to the creation of a new immutable state. These changes are then diffed at a data-level and signalled using DOM events which (while slightly more "hands-on") we found to be much more performant and lightweight than an Angular-like digest loop, experimental “Observable” implementations, or virtual DOM diffing. When a change happens, that section of the DOM is re-rendered and replaced.
 
 A level up, our user interface “behaviors” are entirely separate from this process, effectively progressively enhancing arbitrary pieces of markup. For example, we could apply the same “slider” UI behavior to a variety of different components, each with entirely different markup - in one case a list of films, in another case a list of press quotes.
 
@@ -304,7 +304,7 @@ At the highest level, a History API enabled router was built to intercept all li
 
 [ILLUSTRATION PENDING]
 
-This schematic illustrates the full lifecycle of both the initial server-side request and all subsequent client-side requests, with the components used for each.
+This schematic illustrates the full life cycle of both the initial server-side request and all subsequent client-side requests, with the components used for each.
 
 ## Learnings
 
