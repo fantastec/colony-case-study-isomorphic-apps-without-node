@@ -313,4 +313,4 @@ While several solutions have now started to arise allowing the rendering of Angu
 We imagine that there are many other development teams out there, who like us, desire the benefits of an isomorphic application, but who feel restrained by their choice of back-end technology - whether that be C#, Java, Ruby, or PHP. In these cases, decisions made during the infancy of a company, are now most likely deeply ingrained in the product architecture, and have influenced the structure of the development team. Our solution shows that isomorphic principles can be applied to any stack, without having to introduce a dependency on a front-end framework that may be obsolete in a year’s time, and without having to rebuild an application from scratch. We hope other teams take inspiration from the lessons we’ve learned and we look forward to seeing isomorphic applications across a range of technologies in the future.
 
 ---
-© 2016 Colony Ltd / Patrick Kunka
+© 2017 Colony Ltd / Patrick Kunka
