@@ -244,7 +244,7 @@ Taking inspiration from Handlebars’ limited set of available logic (#if, #unle
 
 By restructuring the format of the layout, we now had the ability to express simple logic, and import arbitrary data into modules. Note that the `if` "directives" take the form of arrays to allow the evaluation of multiple properties.
 
-Taking things further, we began to use this format to describe more complex view structures where modules could be nested within other modules using a tree structure which would correlate with the resulting DOM:
+Taking things further, we began to use this format to describe more complex view structures where modules could be nested within other modules using a tree structure which would roughly correlate with the resulting DOM:
 
 
 ```
