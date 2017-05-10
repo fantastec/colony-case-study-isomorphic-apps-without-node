@@ -306,7 +306,7 @@ At the highest level, a History API enabled router was built to intercept all li
 
 This schematic illustrates the full lifecycle of both the initial server-side request and all subsequent client-side requests, with the components used for each.
 
-## Next Steps
+## Learnings
 
 While several solutions have now started to arise allowing the rendering of Angular applications and React components on non-JavaScript engines (such as ReactJS.NET and React-PHP-V8JS), our solution is still unique in the ASP.NET ecosystem due to its lack of dependency on a particular framework. While our back-end team did have to write some additional code (such as the Renderer) during the development of the solution, their data services, controllers, and application logic were left more or less untouched. The amount of front-end UI code they were able to remove from the back-end as a result of decoupling has lead to a leaner back-end application with a clearer purpose. While our application is in one sense “isomorphic”, it is also cleanly divided, with a clear separation of concerns.
 
