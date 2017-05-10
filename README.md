@@ -22,7 +22,7 @@ From the perspective of removing any potential duplication of effort or code, we
 
 ## Templating
 
-We began by looking at templating. We were big fans of Handlebars due to its strict “logicless” nature and its intentionally limited scope. Given a template, and a data object of any structure, Handlebars will output a rendered string. As it is not a full-blown view engine, it can be used to render small snippets, or integrated into larger frameworks to render an entire application. Its logicless philosophy restricts template logic to #if, #unless, and #each. The idea being that if anything more complex is needed, the template is not the place for it.
+We began by looking at templating. We were big fans of Handlebars due to its strict “logicless” nature and its intentionally limited scope. Given a template, and a data object of any structure, Handlebars will output a rendered string. As it is not a full-blown view engine, it can be used to render small snippets, or integrated into larger frameworks to render an entire application. Its logicless philosophy restricts template logic to `#if`, `#unless`, and `#each`. The idea being that if anything more complex is needed, the template is not the place for it.
 
 Although originally written for JavaScript, Handlebars can be used with any language for which an implementation exists and as a result, implementations now exist for almost every popular server-side programming language. Thankfully for us, a well-maintained open source implementation for C# existed in the form of the excellent Handlebars.Net.
 
