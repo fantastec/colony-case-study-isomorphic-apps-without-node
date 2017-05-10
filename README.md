@@ -1,6 +1,6 @@
 # Colony Case Study: Isomorphic Apps Without Node
 
-> NB: This article was written in early 2016 and describes work done between 2014 and 2015. As a highly-level overview, it is still mostly accurate of our architecture and processes. However, significant work was carried out between 2016-2017 to decouple and genericise much of what is described below in to Colony's own "Cortex" framework, with implemenations in both JavaScript and C#. This article serves as a great introduction to our Isomorphic approach, but all information pertaining to the current iteration of the Cortex framework should be sought within the relavent Cortex documentation.
+> NB: This article was written in early 2016 and mostly describes work carried out between 2014 and 2015. As a high-level overview, it is still mostly accurate of our architecture and processes. However, significant work was carried out between late 2016 to mid 2017 to decouple and genericise much of what is described below in to Colony's own "Cortex" framework, with implemenations in both JavaScript and C#. While this article serves as a great introduction to our Isomorphic approach, all information pertaining to the current iteration of the Cortex framework should be sought within the relavent Cortex documentation.
 
 ## Background
 
