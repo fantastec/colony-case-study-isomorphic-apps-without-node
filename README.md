@@ -1,5 +1,7 @@
 # Colony Case Study: Isomorphic Apps Without Node
 
+> This article was written in early 2016 and describes work done between 2014 and 2015. As a highly-level overview, it is still mostly accurate of our architecture and processes. However, significant work was carried out between 2016-2017 to decouple and genericise much of what is described below in to Colony's own "Cortex" framework, with implemenations in both JavaScript and C#. This article serves as a great introduction to our Isomorphic approach, but all information pertaining to the current iteration of the Cortex framework should be sought within the relavent Cortex documentation.
+
 ## Background
 
 Colony is a global film streaming platform connecting content owners with passionate fans through exclusive extra content. In a landscape of significant competition, our go-to-market strategy relies heavily on world-class product and user experience, with ambitions to redefine the way film is consumed online. An important differentiation between our video-on-demand model and that of competitors like Netflix is our transactional business model: this means that content on our platform is open to the public to browse, and purchase on a pay-as-you-go basis, and isn’t hidden behind a subscription paywall. We benefit from letting Google crawl and index our entire catalogue as a result. On top of this, the nature of our product requires a dynamic user interface that must frequently update to reflect changes to a complex application state. For example, elements must update to reflect whether the user is signed in or not, or whether the content bundle (or parts of it) is owned, or at a certain point in its rental period. While our initial prototype was built using out of the box ASP.NET MVC, we soon realised that turning our front-end into a “single page app” would vastly improve our ability to deal with these challenges, while also enabling our back-end and front–end teams to work independently of one another by “decoupling” the stack.
@@ -98,7 +100,7 @@ The `state` object is used to reflect the current rendered state of the applicat
 
 The `module` is used when data must be delivered to a specific module without exposing it to other modules. For example, we may need to iterate through a list of items within an entry (for example, a gallery of images), rendering an image module for each one, but with different data. Rather than that module having to pull its data out of the entry using its index as a key, the necessary data can be delivered directly to it via the `module` object.
 
-```
+``` handlebars
 <figure>
     <img src="{{module.image.url}}" alt="{{module.image.altText}}"/>
     
