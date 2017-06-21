@@ -302,7 +302,7 @@ At the highest level, a History API enabled router was built to intercept all li
 
 ## Final Architecture
 
-[ILLUSTRATION PENDING]
+![](https://wearecolony.github.io/lifecycle-isomorphic-request.png)
 
 This schematic illustrates the full life cycle of both the initial server-side request and all subsequent client-side requests, with the components used for each.
 
