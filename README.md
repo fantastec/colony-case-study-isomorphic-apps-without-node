@@ -100,20 +100,20 @@ The `state` object is used to reflect the current rendered state of the applicat
 ```
 > An example of the `state` object in use in a template
 
-The `module` is used when data must be delivered to a specific module without exposing it to other modules. For example, we may need to iterate through a list of items within an entry (for example, a gallery of images), rendering an image module for each one, but with different data. Rather than that module having to pull its data out of the entry using its index as a key, the necessary data can be delivered directly to it via the `module` object.
+The `props` object is used when data must be delivered to a specific module without exposing it to other modules. For example, we may need to iterate through a list of items within an entry (for example, a gallery of images), rendering an image module for each one, but with different data. Rather than that module having to pull its data out of the entry using its index as a key, the necessary data can be delivered directly to it via the `props` object.
 
 ``` handlebars
 <figure>
-    <img src="{{module.image.url}}" alt="{{module.image.altText}}"/>
+    <img src="{{props.image.url}}" alt="{{props.image.altText}}"/>
 
-    {{#if module.description}}
+    {{#if props.description}}
         <figcaption>
-            <p>{{module.description}}</p>
+            <p>{{props.description}}</p>
         </figcaption>
     {{/if}}
 </figure>
 ```
-> An example of the `module` object in use in a template
+> An example of the `props` object in use in a template
 
 ## Transpiled View Models
 
@@ -259,11 +259,11 @@ Taking things further, we began to use this format to describe more complex view
     {
         "name": "tab-container",
         "unless": ["entry.userAccess.isLocked"]
-        "layout": [
+        "children": [
             {
                 "name": "explore-tab",
                 "if": ["state.isExploreTabActive"],
-                "layout": [
+                "children": [
                     {
                         "name": "extra-slider",
                         "each": "entry.extrasSliders"
@@ -296,11 +296,11 @@ As we needed to pay close attention to making sure that both implementations wou
 
 Our development team culture had always been to build as much as we could in-house, and own our technology as a result. When it came to developing the first iteration of our single page app in 2014, we had the choice of using an off-the-shelf framework like Angular, Backbone or Ember, or building our own. With our templating taken care of, and our top-level data structure over the API forming our application state, we still needed a few more components to manage routing, data-binding and user interface components. We strongly believed, and still do, in the concept of “unobtrusive” JavaScript, so the blurring of HTML and JavaScript in Angular (and now React's JSX) was something we wanted to avoid. We also realised that trying to retrofit an opinionated framework on to our now quite unique architecture, would result in significant hacking and a fair amount of redundancy in the framework. We therefore decided to build our own solution, with a few distinct principles in mind. Firstly, UI behaviour should not be tightly coupled to specific markup. Secondly, the combination of changes to the application state and the handlebars logic already defined in our templates and layouts should be enough to enable dynamic re-rendering of any element on the page at any time.
 
-The solution we arrived at is not only extremely lightweight, but also extremely modular. At the lowest level we have our state and fully rendered views delivered from the server, where we can denote arbitrary pieces of markup to “subscribe” to the creation of a new immutable state. These changes are then diffed at a data-level and signalled using DOM events which (while slightly more "hands-on") we found to be much more performant and lightweight than an Angular-like digest loop, experimental “Observable” implementations, or virtual DOM diffing. When a change happens, that section of the DOM is re-rendered and replaced.
+The solution we arrived at is not only extremely lightweight, but also extremely modular. At the lowest level we have our state and fully rendered views delivered from the server.
 
-A level up, our user interface “behaviors” are entirely separate from this process, effectively progressively enhancing arbitrary pieces of markup. For example, we could apply the same “slider” UI behavior to a variety of different components, each with entirely different markup - in one case a list of films, in another case a list of press quotes.
+A level up, our user interface “behaviors” progressively enhance our rendered handlebars modules with interactive JavaScript functionality. To update the UI, behaviors can either update the `props` of their respective modules, using a React-like `.setProps()` call (e.g. opening a search bar), or apply Redux-like actions to the application state (signing in to an account). With both of these approahces, one or module are re-rendered against the new data, and diffed using in-memory DOM, so that the only minimum amount of DOM manipulation is performed at any time.
 
-At the highest level, a History API enabled router was built to intercept all link clicks, and determine which layout file was needed to render the resulting view.
+A History API enabled router exists to intercept all link clicks, rebuild the layout for the resulting view, and re-render the application according to the new layout. At this point, modules are diffed at a layout-level to reduce the amount of DOM diffing when changing views.
 
 ## Final Architecture
 
